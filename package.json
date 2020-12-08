@@ -1,0 +1,28 @@
+{
+  "name": "coreflowdesigner-js",
+  "version": "0.1.7",
+  "description": "CoreFlowDesignerJs",
+  "main": "DesignSurface.htm",
+  "author": {
+    "name": "Jeff Gueldre"
+  },
+  "devDependencies": {
+    "grunt": "^1.1.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-cssmin": "^3.0.0",
+    "grunt-remove-comments": "^0.1.6",
+    "grunt-sass": "^3.1.0",
+    "grunt-svg-css": "^0.2.9",
+    "grunt-terser": "^1.0.0",
+    "node-sass": "^4.14.0"
+  },
+  "files": [
+      "dist",
+      "docs"
+   ]
+  ,
+  "dependencies": {
+    "jquery": "^3.5.1",
+    "vue": "^2.6.11"
+  }
+}

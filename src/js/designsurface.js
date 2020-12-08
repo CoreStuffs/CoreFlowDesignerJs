@@ -1,5 +1,24 @@
 
-
+var coreflow = {
+    designSurface : function (element, opts, definition) {
+        element.innerHtml = "<v-designsurface id='___flowapp___' ref='___flowapp___'/>";
+        var vue = __createVue(element, opts);
+        vue.methods.saveFlowDefinition=function(definition, callback){
+            opts.onSavingDefinition(definition, callback);
+        }        
+        var v = new Vue(vue);
+        if(definition)v.definition = definition;
+        return{
+            setDefinition:function(definition){
+                v.definition = definition; 
+                return this;             
+            },
+            getDefinition:function(){
+                return v.definition;              
+            }
+        }
+    }
+}
 
 Vue.component('v-designsurface', {
     template: `<div class="cs-cf" v-cloak>
@@ -132,262 +151,6 @@ Vue.component('v-designsurface', {
         return obj;
     },
     methods: {
-        saveSchema: function () {
-            this.$root.saveFormSchema(this.schema, function (data) {
-                UIkit.modal.alert("Successfully saved");
-            });
-        },
-        openSettingsByObject: function (obj, callback) {
-            Object.assign(obj, registeredFields.get(obj.type).sanitizeSchemaModel(obj, obj.id));
-            this.$refs.editFormModal.show(obj, function (model) {
-                Object.assign(obj, model);
-                if (callback) callback(obj);
-            });
-
-        },
-        openSettingsById: function (id) {
-            var obj = this.findNodeById(id, this.schema);
-            this.openSettingsByObject(obj);
-
-        },
-        openVariableSettings: function (variable, acceptedTypes, callback) {
-            var vari;
-            if(variable){
-                vari = variable;
-            }else{
-                vari = {
-                    name : '',
-                    validations:[{type:'required'}]
-                };
-            }
-
-            this.$refs.editVariableModal.show(vari, acceptedTypes , function (model) {
-                Object.assign(vari, model);
-                if (callback) callback(vari);
-            });
-
-        },
-
-        removeNodeById: function (id) {
-            var schema = this.schema;
-            var app = this;
-            UIkit.modal.confirm('Are you sure to want to delete this field?').then(function () {
-                var obj = app.findNodeById(id, schema);
-                var coll = app.findParentNodeCollectionById(schema, id);
-                const index = coll.indexOf(obj);
-                if (index > -1) {
-                    coll.splice(index, 1);
-                }
-
-            }, function () {
-
-            });
-        },
-        applyToolbarEvents: function () {
-            $(".sortable-item").mousemove(function (event) {
-                event.stopPropagation();
-                $(".toolbar").hide();
-                $(this).find("> .toolbar").show();
-            });
-            $(".sortable-item").mouseleave(function () {
-                event.stopPropagation();
-                $(this).find("> .toolbar").hide();
-            });
-        },
-        configureNestedTables: function () {
-            var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
-            var _parent = this;
-            // Loop through each nested sortable element
-            for (var i = 0; i < nestedSortables.length; i++) {
-                new Sortable(nestedSortables[i], {
-                    group: {
-                        name: 'share',
-                    },
-                    draggale: '.sortable-item',
-                    handle: '.moveHandle',
-                    animation: 150,
-                    fallbackOnBody: true,
-                    swapThreshold: 0.25,
-                    ghostClass: 'sortable-ghost',
-                    dragClass: 'sortable-dragitem',
-                    onAdd: function (evt) {
-                        var elName;
-                        if (evt.pullMode === "clone") {
-                            var item = $(evt.item);
-                            var type = item.data("type");
-                            var newId = 'ctrl_' + _parent.getNextId(_parent.schema);
-                            var model = registeredFields.get(type).sanitizeSchemaModel(null, newId);
-                            model.id = newId
-                            model.type = type
-
-                            var newIndex = evt.newDraggableIndex;
-                            var collTo = _parent.findNodeCollectionByDomElement($(evt.to), _parent.schema);
-                            item.remove();
-
-                            _parent.openSettingsByObject(model, function (model) {
-                                collTo.splice(newIndex, 0, model);
-                                _parent.$nextTick(function () { _parent.configureNestedTables(); });
-
-                            });
-                        }
-                    },
-                    onEnd: function (/**Event*/evt) {
-                        var itemEl = evt.item;  // dragged HTMLElement
-                        evt.to;    // target list
-                        evt.from;  // previous list
-                        evt.oldIndex;  // element's old index within old parent
-                        evt.newIndex;  // element's new index within new parent
-                        evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
-                        evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
-                        evt.clone // the clone element
-                        evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
-
-                        var item = _parent.findNodeById($(evt.clone).data("ref"), this);
-                        var collFrom = _parent.findNodeCollectionByDomElement($(evt.from), this);
-                        var collTo = _parent.findNodeCollectionByDomElement($(evt.to), this);
-
-                        if (item && collFrom && collTo) {
-                            var newIndex = evt.newDraggableIndex;
-                            var oldIndex = evt.oldDraggableIndex;
-                            if (collFrom === collTo) {
-                                if (newIndex > oldIndex) {
-                                    newIndex++;
-                                } else {
-                                    oldIndex++;
-                                }
-                            }
-                            collTo.splice(newIndex, 0, item);
-                            collFrom.splice(oldIndex, 1);
-                        }
-                        _parent.configureNestedTables();
-                    }
-                });
-
-            }
-        },
-        getNextId: function () {
-            var schema = this.schema;
-            var highestId = 0;
-            var _s = function (node, func) {
-                var subColl = null;
-                if (typeof (node.columns) !== "undefined") subColl = node.columns;
-                if (typeof (node.fields) !== "undefined") subColl = node.fields;
-                func(node);
-                if (subColl !== null) {
-                    for (var i = 0; i < subColl.length; i++) {
-                        _s(subColl[i], func);
-                    }
-                }
-            }
-            _s(schema, function (node) {
-                if (typeof (node.id) !== 'undefined') {
-                    var sId = node.id;
-                    if (sId.startsWith("ctrl_")) {
-                        iId = parseInt(sId.substring(5));
-                        if (iId > highestId) highestId = iId;
-                    }
-                }
-            });
-            return highestId + 1;
-        },
-        applyNodeModification: function (modification) {
-            var schema = this.schema;
-            var __s = function (node, modification) {
-                var subColl = null;
-                if (typeof (node.columns) !== "undefined") subColl = node.columns;
-                if (typeof (node.fields) !== "undefined") subColl = node.fields;
-                modification(node);
-                if (subColl !== null) {
-                    for (var i = 0; i < subColl.length; i++) {
-                        var res = __s(subColl[i], modification);
-                        if (res !== null) return res;
-                    }
-                }
-                return null;
-            }
-            __s(schema, modification);
-        },
-        findNodeById: function (id) {
-            var schema = this.schema;
-            if (id === "formContainer") return schema;
-            var __s = function (node, id) {
-                var subColl = null;
-                if (typeof (node.columns) !== "undefined") subColl = node.columns;
-                if (typeof (node.fields) !== "undefined") subColl = node.fields;
-                if (id === node.id) {
-                    return node;
-                } else {
-                    if (subColl !== null) {
-                        for (var i = 0; i < subColl.length; i++) {
-                            var res = __s(subColl[i], id);
-                            if (res !== null) return res;
-                        }
-                    }
-                }
-                return null;
-            }
-            return __s(schema, id)
-        },
-        sanitizeSchemaModel: function (schema) {
-            var __s = function (node) {
-                if (!node) return node;
-                var subColl = null;
-                if (typeof (node.columns) !== "undefined") subColl = node.columns;
-                if (typeof (node.fields) !== "undefined") subColl = node.fields;
-                if (node.type) Object.assign(node, registeredFields.get(node.type).sanitizeSchemaModel(node, node.id));
-                if (subColl !== null) {
-                    for (var i = 0; i < subColl.length; i++) {
-                        var res = __s(subColl[i]);
-                    }
-                }
-            }
-            __s(schema)
-            return schema;
-        },
-        findNodeCollectionByDomElement: function (element) {
-            var schema = this.schema;
-            var id = null;
-            if ($(element).attr("id")) id = $(element).attr("id");
-            else if ($(element).data("ref")) id = $(element).data("ref");
-
-            if (id === "formContainer") return schema.fields;
-            var __s = function (node, id) {
-                var subColl = null;
-                if (typeof (node.columns) !== "undefined") subColl = node.columns;
-                if (typeof (node.fields) !== "undefined") subColl = node.fields;
-                if (subColl === null) return null;
-                if (id === node.id) {
-                    return subColl;
-                } else {
-                    for (var i = 0; i < subColl.length; i++) {
-                        var res = __s(subColl[i], id);
-                        if (res !== null) return res;
-                    }
-                }
-                return null;
-            }
-
-            return __s(schema, id)
-        },
-        findParentNodeCollectionById: function (node, id) {
-            var subColl = null;
-            if (typeof (node.columns) !== "undefined") subColl = node.columns;
-            if (typeof (node.fields) !== "undefined") subColl = node.fields;
-
-            if (subColl === null) return null;
-
-            for (var i = 0; i < subColl.length; i++) {
-
-                if (subColl[i].id && subColl[i].id === id) {
-                    return subColl;
-                }
-
-                var res = this.findParentNodeCollectionById(subColl[i], id);
-                if (res !== null) return res;
-            }
-
-            return null;
-        }
 
 
     },

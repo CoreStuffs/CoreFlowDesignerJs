@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>CoreFormJS Builder - Dev</title>
+    <title>CoreFlowDesignerJS - Dev</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./css/uikit.min.css" />
     <link rel="stylesheet" href="./css/designsurface.css" />
@@ -22,7 +22,7 @@
     </div>
     <script>
       
-      var schema = {
+      var definition = {
   "definitionVersion": 1,
   "definitionName": "sequence1",
   "title": "Test sequence",
@@ -44,6 +44,11 @@
 
     </script>
 
+<script for="window" event="onload">
+   coreflow.designSurface("#app", {}
+
+            ).setDefinition(definition);
+</script>
 
 
 </body>

@@ -13,7 +13,10 @@
     <script src="./js/uikit.min.js"></script>
     <script src="./js/uikit-icons.min.js"></script>
     <script src="./js/sortable.min.js"></script>
+    <script src="./js/vuedraggable.umd.min.js"></script>    
     <script src="./js/designsurface.js"></script>
+
+    <script src="./js/activities/sequence/0.1/activity.js"></script>
 </head>
 <body>
 
@@ -28,13 +31,44 @@
   "title": "Test sequence",
   "activity": {
     "type":"sequence",
+    "id" : "123456",
     "version": "0.1",
     "title" : "Sequence 1",
     "activities" :[
       {
         "type":"sequence",
         "version": "0.1",
-        "title" : "Sequence 2"
+        "title" : "Sequence 2",
+        "id" : "123457",
+        "activities" :[
+        {
+          "type":"sequence",
+          "version": "0.1",
+          "title" : "Sequence 3",
+          "id" : "123453",
+          "activities" : [
+            
+          ]
+        },
+        {
+          "type":"sequence",
+          "version": "0.1",
+          "title" : "Sequence 4",
+          "id" : "123452",
+          "activities" : [
+            
+          ]
+        },
+        {
+          "type":"sequence",
+          "version": "0.1",
+          "title" : "Sequence 5",
+          "id" : "123451",
+          "activities" : [
+            
+          ]
+        }
+      ]
       }
     ]
   }

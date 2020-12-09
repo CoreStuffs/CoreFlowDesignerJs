@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CoreFlowDesignerJS - Dev</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/uikit.min.css" />
+    <link rel="stylesheet" href="./css/designsurface.css" />
+
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/vuelidate.min.js"></script>
+    <script src="./js/validators.min.js"></script>
+    <script src="./js/uikit.min.js"></script>
+    <script src="./js/uikit-icons.min.js"></script>
+    <script src="./js/sortable.min.js"></script>
+    <script src="./js/designsurface.js"></script>
+</head>
+<body>
+
+    <div style="max-width: 900px;margin:auto">
+        <div id="app"/>
+    </div>
+    <script>
+      
+      var definition = {
+  "definitionVersion": 1,
+  "definitionName": "sequence1",
+  "title": "Test sequence",
+  "activity": {
+    "type":"sequence",
+    "version": "0.1",
+    "title" : "Sequence 1",
+    "activities" :[
+      {
+        "type":"sequence",
+        "version": "0.1",
+        "title" : "Sequence 2"
+      }
+    ]
+  }
+    
+}
+
+
+    </script>
+
+<script for="window" event="onload">
+   coreflow.designSurface("#app", {}, definition)
+</script>
+
+
+</body>
+</html>

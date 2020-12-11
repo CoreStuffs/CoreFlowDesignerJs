@@ -17,6 +17,7 @@
     <script src="./js/designsurface.js"></script>
 
     <script src="./js/activities/sequence/0.1/activity.js"></script>
+    <script src="./js/activities/if/0.1/activity.js"></script>
 </head>
 <body>
 
@@ -49,22 +50,24 @@
           ]
         },
         {
-          "type":"sequence",
+          "type":"if",
           "version": "0.1",
-          "title" : "Sequence 4",
+          "title" : "if 1",
           "id" : "123452",
-          "activities" : [
-            
-          ]
-        },
-        {
-          "type":"sequence",
-          "version": "0.1",
-          "title" : "Sequence 5",
-          "id" : "123451",
-          "activities" : [
-            
-          ]
+          "then" :{
+                    "type":"sequence",
+                    "version": "0.1",
+                    "title" : "Sequence 3",
+                    "id" : "1234446553",
+                    "activities" : []
+                  },
+          "else" :{
+                      "type":"sequence",
+                      "version": "0.1",
+                      "title" : "Sequence 3",
+                      "id" : "12345654",
+                      "activities" : []
+                  }
         }
     ]
     

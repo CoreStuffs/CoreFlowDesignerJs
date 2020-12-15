@@ -18,6 +18,7 @@
 
     <script src="./js/activities/sequence/0.1/activity.js"></script>
     <script src="./js/activities/if/0.1/activity.js"></script>
+    <script src="./js/activities/parallel/0.1/activity.js"></script>
 </head>
 <body>
 
@@ -55,19 +56,39 @@
           "title" : "if 1",
           "id" : "123452",
           "then" :{
-                    "type":"sequence",
-                    "version": "0.1",
-                    "title" : "Sequence 3",
-                    "id" : "1234446553",
-                    "activities" : []
-                  },
+            "type":"sequence",
+            "version": "0.1",
+            "title" : "Sequence 3",
+            "id" : "123453",
+            "activities" : []
+          },
           "else" :{
-                      "type":"sequence",
-                      "version": "0.1",
-                      "title" : "Sequence 3",
-                      "id" : "12345654",
-                      "activities" : []
-                  }
+            "type":"sequence",
+            "version": "0.1",
+            "title" : "Sequence 3",
+            "id" : "123453",
+            "activities" : []
+          },
+        },
+        {
+          "type":"parallel",
+          "version": "0.1",
+          "title" : "Parallel 1",
+          "id" : "1254452",
+          "activities" :[{
+                            "type":"sequence",
+                            "version": "0.1",
+                            "title" : "Sequence 4a",
+                            "id" : "123453",
+                            "activities" : []
+                          },
+                          {
+                            "type":"sequence",
+                            "version": "0.1",
+                            "title" : "Sequence 4b",
+                            "id" : "123453",
+                            "activities" : []
+                          }]
         }
     ]
     

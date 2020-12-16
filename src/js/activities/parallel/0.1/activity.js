@@ -1,6 +1,6 @@
 Vue.component('parallel', {
     template: `<div>
-                    <div style="margin:0 auto;border:1px solid #CAC8C7; min-height:20px;background-color:white; width:500px">
+                    <div style="margin:0 auto;border:1px solid #CAC8C7; min-height:20px;background-color:white; width:400px">
                         <activityHeader :title="definition.title" icon="img/move.svg" color="#0077FF"></activityHeader>
                     </div>
                     <div style="width:100%">
@@ -8,8 +8,8 @@ Vue.component('parallel', {
                             <line id="svg_1" y2="0" x2="50%" y1="10" x1="50%" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" stroke="#000000" fill="none"/>
                         </svg>                    
                     </div>
-                    <div style="display:flex; margin:0 auto;margin-top:-15px" :style="{'width' : (activities.length * 420) + 'px' }">
-                            <div style="width:420px;" v-for="(element,index) in activities" :key="element.id">
+                    <div style="display:flex; margin:0 auto;margin-top:-15px">
+                            <div v-for="(element,index) in activities" :key="element.id">
                                 <div style="opacity:0.8; width:100%; bottom:0px">
                                     <svg version="1.1" id="Layer_1" height="25px" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                             xml:space="preserve">

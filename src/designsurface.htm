@@ -80,7 +80,26 @@
                             "version": "0.1",
                             "title" : "Sequence 4a",
                             "id" : "123453",
-                            "activities" : []
+                            "activities" : [{
+                                              "type":"if",
+                                              "version": "0.1",
+                                              "title" : "if 1",
+                                              "id" : "123452",
+                                              "then" :{
+                                                "type":"sequence",
+                                                "version": "0.1",
+                                                "title" : "Sequence 3",
+                                                "id" : "123453",
+                                                "activities" : []
+                                              },
+                                              "else" :{
+                                                "type":"sequence",
+                                                "version": "0.1",
+                                                "title" : "Sequence 3",
+                                                "id" : "123453",
+                                                "activities" : []
+                                              },
+                                            }]
                           },
                           {
                             "type":"sequence",
@@ -97,18 +116,24 @@
                             "activities" : []
                           },
                           {
-                            "type":"sequence",
+                            "type":"if",
                             "version": "0.1",
-                            "title" : "Sequence 4b",
-                            "id" : "123453",
-                            "activities" : []
-                          },
-                          {
-                            "type":"sequence",
-                            "version": "0.1",
-                            "title" : "Sequence 4b",
-                            "id" : "123453",
-                            "activities" : []
+                            "title" : "if 1",
+                            "id" : "123452",
+                            "then" :{
+                              "type":"sequence",
+                              "version": "0.1",
+                              "title" : "Sequence 3",
+                              "id" : "123453",
+                              "activities" : []
+                            },
+                            "else" :{
+                              "type":"sequence",
+                              "version": "0.1",
+                              "title" : "Sequence 3",
+                              "id" : "123453",
+                              "activities" : []
+                            },
                           }]
         }
     ]

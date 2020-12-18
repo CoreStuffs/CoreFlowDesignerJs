@@ -41,7 +41,7 @@ Vue.component('activityHeader', {
 Vue.component('activitySequence', {
     template: `
     <div  style="margin:0 auto; position:absolute">
-        <draggable v-model="activities" item-key="id" style="display:block;min-height:20px; padding:5px; align-self:center">
+        <!--<draggable v-model="activities" item-key="id" style="min-height:20px; padding:5px; align-self:center">-->
             <div v-for="(element,index) in activities" :key="element.id" style="position:static;display:flex">
                 <div style="margin:0 auto">
                     <component :key="element.id"
@@ -54,7 +54,7 @@ Vue.component('activitySequence', {
                     </div>
                 </div>
             </div>
-        </draggable>
+        <!--</draggable>-->
     </div>`,
     data: function () {
         return {

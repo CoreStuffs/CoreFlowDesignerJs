@@ -23,9 +23,7 @@ Vue.component('if', {
                                 <div style="border:1px solid #CAC8C7; min-height:20px;background-color:white; margin-left:5px; margin-right:5px">
                                         <activityHeader title="Then" icon="img/move.svg" color="#00FF00"></activityHeader>
                                 </div>
-                                <div>
                                     <activitySequence :activities="thenBranch.activities"></activitySequence>
-                                </div>
                             </div>                    
                             <div>
                                 <div style="height:27px;  opacity:0.8; width:100%; bottom:0px">
@@ -41,9 +39,7 @@ Vue.component('if', {
                                 <div style="margin-left:10px; border:1px solid #CAC8C7; min-height:20px;background-color:white; margin-left:5px; margin-right:5px">
                                     <activityHeader title="Else" icon="img/move.svg" color="#FF0044"></activityHeader>
                                 </div>
-                                <div>
                                     <activitySequence :activities="elseBranch.activities"></activitySequence>
-                                </div>
                             </div>
                     </div>
                 </div>`,
